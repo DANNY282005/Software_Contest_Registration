@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Panimalar Engineering College</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .dashboard-container {
+            padding: 20px;
+        }
+        
+        .registrations-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .registrations-table th,
+        .registrations-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .registrations-table th {
+            background-color: #8b008b;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .registrations-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .registrations-table tr:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .logout-btn {
+            padding: 8px 16px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
+        
+        .dashboard-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .export-btn {
+            padding: 8px 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .export-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="registration-form">
+            <div class="college-header">
+                <img src="{{ url_for('static', filename='panimalarLogo.jpg') }}" alt="Panimalar Engineering College Logo" class="college-logo">
+                <div class="college-name">
+                    <h2>PANIMALAR</h2>
+                    <h3>ENGINEERING COLLEGE</h3>
+                    <h4>CHENNAI CITY CAMPUS</h4>
+                </div>
+            </div>
+            <div class="dashboard-container">
+                <div class="dashboard-header">
+                    <h1>Registered Students</h1>
+                    <div class="dashboard-buttons">
+                        <a href="{{ url_for('export_excel') }}" class="export-btn">Export to Excel</a>
+                        <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+                    </div>
+                </div>
+                <table class="registrations-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Roll Number</th>
+                            <th>Register Number</th>
+                            <th>Department</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in registrations %}
+                        <tr>
+                            <td>{{ student.name }}</td>
+                            <td>{{ student.rollNumber }}</td>
+                            <td>{{ student.registerNumber }}</td>
+                            <td>{{ student.department }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Software Contest Registration - Panimalar Engineering College</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="registration-form">
+            <div class="admin-section">
+                <a href="{{ url_for('admin_login') }}" class="admin-login-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                    </svg>
+                    Admin Login
+                </a>
+            </div>
+            <div class="college-header">
+                <img src="{{ url_for('static', filename='panimalarLogo.jpg') }}" alt="Panimalar Engineering College Logo" class="college-logo">
+                <div class="college-name">
+                    <h2>PANIMALAR</h2>
+                    <h3>ENGINEERING COLLEGE</h3>
+                    <h4>CHENNAI CITY CAMPUS</h4>
+                </div>
+            </div>
+            <h1>Software Contest Registration</h1>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            <form action="{{ url_for('register') }}" method="POST" id="registrationForm">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required placeholder="Enter your full name">
+                </div>
+
+                <div class="form-group">
+                    <label for="rollNumber">Roll Number Ex : ( 2022PCCCSE202 )</label>
+                    <input type="text" id="rollNumber" name="rollNumber" required placeholder="Enter your roll number">
+                    <span id="rollNumberError" class="error-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="registerNumber">Register Number Ex : ( 313522104024 )</label>
+                    <input type="text" id="registerNumber" name="registerNumber" required placeholder="Enter 12-digit register number">
+                    <span id="registerNumberError" class="error-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="department">Department</label>
+                    <select id="department" name="department" required>
+                        <option value="">Select Department</option>
+                        <option value="CSE">CSE</option>
+                        <option value="IT">IT</option>
+                        <option value="AIDS">AIDS</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-btn">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            const rollNumber = document.getElementById('rollNumber').value;
+            const registerNumber = document.getElementById('registerNumber').value;
+            const rollNumberError = document.getElementById('rollNumberError');
+            const registerNumberError = document.getElementById('registerNumberError');
+            let isValid = true;
+
+            // Roll number validation
+            const rollNumberPattern = /^2022PCC(CSE|IT|AIDS)\d{3}$/;
+            if (!rollNumberPattern.test(rollNumber)) {
+                rollNumberError.textContent = 'Invalid roll number format';
+                rollNumberError.style.display = 'block';
+                isValid = false;
+            } else {
+                rollNumberError.style.display = 'none';
+            }
+
+            // Register number validation
+            const registerNumberPattern = /^\d{12}$/;
+            if (!registerNumberPattern.test(registerNumber)) {
+                registerNumberError.textContent = 'Register number must be exactly 12 digits';
+                registerNumberError.style.display = 'block';
+                isValid = false;
+            } else {
+                registerNumberError.style.display = 'none';
+            }
+
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html> 

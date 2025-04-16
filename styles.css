@@ -1,0 +1,237 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #8b008b 0%, #4b0082 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+}
+
+.registration-form {
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.admin-section {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.admin-login-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: transparent;
+    border: 2px solid #8b008b;
+    border-radius: 5px;
+    color: #8b008b;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.admin-login-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.admin-login-btn:hover {
+    background-color: #8b008b;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(139, 0, 139, 0.2);
+}
+
+.college-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #8b008b;
+}
+
+.college-logo {
+    width: 100px;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.college-name {
+    color: #8b008b;
+}
+
+.college-name h2 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    letter-spacing: 2px;
+}
+
+.college-name h3 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    letter-spacing: 1px;
+}
+
+.college-name h4 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #ff0000;
+    letter-spacing: 1px;
+}
+
+h1 {
+    text-align: center;
+    color: #8b008b;
+    margin-bottom: 30px;
+    font-size: 28px;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-bottom: 3px solid #8b008b;
+    padding-bottom: 10px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background-color: #f8f9fa;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #8b008b;
+    box-shadow: 0 0 0 3px rgba(139, 0, 139, 0.1);
+}
+
+select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238b008b' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    padding-right: 40px;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    background: #8b008b;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.submit-btn:hover {
+    background: #4b0082;
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(75, 0, 130, 0.3);
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 5px;
+    display: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    background-color: #fff3f3;
+}
+
+.back-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: transparent;
+    border: 2px solid #8b008b;
+    border-radius: 6px;
+    color: #8b008b;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.back-btn:hover {
+    background-color: #8b008b;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(139, 0, 139, 0.2);
+}
+
+input[type="password"] {
+    letter-spacing: 0.1em;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .registration-form {
+        padding: 20px;
+    }
+    
+    .college-name h2 {
+        font-size: 28px;
+    }
+    
+    .college-name h3 {
+        font-size: 20px;
+    }
+    
+    .college-name h4 {
+        font-size: 16px;
+    }
+    
+    h1 {
+        font-size: 24px;
+    }
+
+    input, select, .submit-btn {
+        padding: 12px;
+        font-size: 16px;
+    }
+} 

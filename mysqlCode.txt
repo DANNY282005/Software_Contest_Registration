@@ -1,0 +1,16 @@
+CREATE DATABASE software_contest;
+USE software_contest;
+
+CREATE TABLE Students (
+    name VARCHAR(100),
+    rollNumber VARCHAR(20) UNIQUE,
+    registerNumber CHAR(12) UNIQUE,
+    department VARCHAR(4)
+);
+
+CREATE TABLE Admin (
+    name VARCHAR(100),
+    password VARCHAR(255)
+);
+
+pip install openpyxl

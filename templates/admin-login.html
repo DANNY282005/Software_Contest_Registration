@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Panimalar Engineering College</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="registration-form">
+            <div class="college-header">
+                <img src="{{ url_for('static', filename='panimalarLogo.jpg') }}" alt="Panimalar Engineering College Logo" class="college-logo">
+                <div class="college-name">
+                    <h2>PANIMALAR</h2>
+                    <h3>ENGINEERING COLLEGE</h3>
+                    <h4>CHENNAI CITY CAMPUS</h4>
+                </div>
+            </div>
+            <h1>Admin Login</h1>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            <form action="{{ url_for('admin_auth') }}" method="POST" id="adminLoginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required placeholder="Enter admin username">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required placeholder="Enter admin password">
+                </div>
+
+                <button type="submit" class="submit-btn">Login</button>
+                <a href="{{ url_for('index') }}" class="back-btn">Back to Registration</a>
+            </form>
+        </div>
+    </div>
+</body>
+</html> 
