@@ -66,7 +66,7 @@ def register():
             cur.close()
             
             if result:
-                flash('Registration successful! Data stored in database.', 'success')
+                flash('Registration successful!', 'success')
             else:
                 flash('Registration might have failed. Please check with admin.', 'warning')
             
@@ -156,13 +156,13 @@ def export_excel():
         ws.title = "Registered Students"
 
         # Add headers
-        headers = ['Name', 'Roll Number', 'Register Number', 'Department']
+        headers = ['Name', 'Roll Number', 'Register Number', 'Department', 'Registration Date', 'Last Updated']
         for col, header in enumerate(headers, 1):
             ws.cell(row=1, column=col, value=header)
 
         # Get data from database
         cur = mysql.connection.cursor()
-        cur.execute("SELECT name, rollNumber, registerNumber, department FROM Students ORDER BY name")
+        cur.execute("SELECT name, rollNumber, registerNumber, department, created_at, updated_at FROM Students ORDER BY name")
         students = cur.fetchall()
         cur.close()
 
@@ -172,6 +172,8 @@ def export_excel():
             ws.cell(row=row, column=2, value=student['rollNumber'])
             ws.cell(row=row, column=3, value=student['registerNumber'])
             ws.cell(row=row, column=4, value=student['department'])
+            ws.cell(row=row, column=5, value=student['created_at'].strftime('%Y-%m-%d %H:%M:%S'))
+            ws.cell(row=row, column=6, value=student['updated_at'].strftime('%Y-%m-%d %H:%M:%S'))
 
         # Create a BytesIO object to store the Excel file
         excel_file = io.BytesIO()

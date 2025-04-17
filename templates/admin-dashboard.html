@@ -6,6 +6,9 @@
     <title>Admin Dashboard - Panimalar Engineering College</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
+        .container{
+            max-width: 90%;
+        }
         .dashboard-container {
             padding: 20px;
         }
@@ -78,6 +81,16 @@
         .export-btn:hover {
             background-color: #218838;
         }
+        
+        .registrations-table td {
+            font-size: 14px;
+        }
+        
+        .registrations-table td:nth-child(5),
+        .registrations-table td:nth-child(6) {
+            white-space: nowrap;
+            font-family: monospace;
+        }
     </style>
 </head>
 <body>
@@ -106,6 +119,8 @@
                             <th>Roll Number</th>
                             <th>Register Number</th>
                             <th>Department</th>
+                            <th>Registration Date</th>
+                            <th>Last Updated</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -115,6 +130,8 @@
                             <td>{{ student.rollNumber }}</td>
                             <td>{{ student.registerNumber }}</td>
                             <td>{{ student.department }}</td>
+                            <td>{{ student.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                            <td>{{ student.updated_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
