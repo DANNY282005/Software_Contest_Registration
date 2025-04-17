@@ -1,20 +1,24 @@
 CREATE DATABASE software_contest;
 USE software_contest;
-
 CREATE TABLE Students (
     name VARCHAR(100),
-    rollNumber VARCHAR(20) UNIQUE,
-    registerNumber CHAR(12) UNIQUE,
+    rollNumber VARCHAR(20),
+    registerNumber CHAR(12),
     email VARCHAR(100) UNIQUE,
     department VARCHAR(4),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (registerNumber, rollNumber)
 );
-
+drop table Students;
+select * from students;
+DELETE FROM students WHERE registerNumber = 313522104024;
+truncate table students;
 CREATE TABLE Admin (
     name VARCHAR(100),
     password VARCHAR(255)
 );
+insert into admin (name, password) values("Alwin_Infant","Alwin@123");
 
 pip install openpyxl
 pip install Flask-Mail
