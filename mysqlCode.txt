@@ -5,6 +5,7 @@ CREATE TABLE Students (
     name VARCHAR(100),
     rollNumber VARCHAR(20) UNIQUE,
     registerNumber CHAR(12) UNIQUE,
+    email VARCHAR(100) UNIQUE,
     department VARCHAR(4),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -16,3 +17,4 @@ CREATE TABLE Admin (
 );
 
 pip install openpyxl
+pip install Flask-Mail

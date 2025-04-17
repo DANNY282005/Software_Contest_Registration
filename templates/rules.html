@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rules & Regulations - Panimalar Engineering College</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='panimalarLogo.jpg') }}">
+
+    <style>
+        .rules-container {
+            padding: 20px;
+            max-height: 70vh;
+            overflow-y: auto;
+            margin: 0 -20px;
+        }
+
+        .rules-section {
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+
+        .rules-section h2 {
+            color: #8b008b;
+            margin-bottom: 15px;
+            font-size: 24px;
+            border-bottom: 2px solid #8b008b;
+            padding-bottom: 8px;
+        }
+
+        .rules-list {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+
+        .rules-list li {
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 25px;
+            line-height: 1.5;
+            font-size: 16px;
+        }
+
+        .rules-list li:before {
+            content: "•";
+            color: #8b008b;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .register-section {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #8b008b;
+        }
+
+        .proceed-btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: #8b008b;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .proceed-btn:hover {
+            background: #4b0082;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(75, 0, 130, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .rules-container {
+                max-height: 60vh;
+                padding: 15px 0;
+            }
+
+            .rules-section {
+                margin-bottom: 25px;
+                padding: 0 15px;
+            }
+
+            .rules-section h2 {
+                font-size: 20px;
+                margin-bottom: 12px;
+            }
+
+            .rules-list li {
+                font-size: 14px;
+                margin-bottom: 10px;
+                padding-left: 20px;
+            }
+
+            .proceed-btn {
+                padding: 12px 30px;
+                font-size: 16px;
+                max-width: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .rules-container {
+                max-height: 55vh;
+            }
+
+            .rules-section {
+                margin-bottom: 20px;
+                padding: 0 10px;
+            }
+
+            .rules-section h2 {
+                font-size: 18px;
+            }
+
+            .rules-list li {
+                font-size: 13px;
+                margin-bottom: 8px;
+            }
+
+            .proceed-btn {
+                padding: 10px 25px;
+                font-size: 15px;
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="registration-form">
+            <div class="college-header">
+                <img src="{{ url_for('static', filename='panimalarLogo.jpg') }}" alt="Panimalar Engineering College Logo" class="college-logo">
+                <div class="college-name">
+                    <h2>PANIMALAR</h2>
+                    <h3>ENGINEERING COLLEGE</h3>
+                    <h4>CHENNAI CITY CAMPUS</h4>
+                </div>
+            </div>
+            <h1>Software Contest Rules & Regulations</h1>
+            
+            <div class="rules-container">
+                <div class="rules-section">
+                    <h2>Eligibility Criteria</h2>
+                    <ul class="rules-list">
+                        <li>Only students from CSE, IT, and AIDS departments are eligible to participate.</li>
+                        <li>Students must be currently enrolled in the college.</li>
+                        <li>Valid college ID card is mandatory for participation.</li>
+                        <li>Students must register with their correct roll number and register number.</li>
+                    </ul>
+                </div>
+
+                <div class="rules-section">
+                    <h2>Registration Process</h2>
+                    <ul class="rules-list">
+                        <li>Registration is mandatory for participation.</li>
+                        <li>Each student can register only once.</li>
+                        <li>All information provided during registration must be accurate.</li>
+                        <li>Registration details cannot be modified after submission.</li>
+                    </ul>
+                </div>
+
+                <div class="rules-section">
+                    <h2>Contest Guidelines</h2>
+                    <ul class="rules-list">
+                        <li>Participants must arrive 30 minutes before the contest start time.</li>
+                        <li>Laptops must be fully charged and in working condition.</li>
+                        <li>Internet access will be provided during the contest.</li>
+                        <li>Use of mobile phones is strictly prohibited during the contest.</li>
+                    </ul>
+                </div>
+
+                <div class="rules-section">
+                    <h2>Important Notes</h2>
+                    <ul class="rules-list">
+                        <li>Participants must carry their college ID card on the day of the contest.</li>
+                        <li>Any form of malpractice will lead to immediate disqualification.</li>
+                        <li>The decision of the judges will be final and binding.</li>
+                        <li>College reserves the right to modify rules at any time.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="register-section">
+                <a href="{{ url_for('registration') }}" class="proceed-btn">Proceed to Registration</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

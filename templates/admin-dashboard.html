@@ -5,18 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Panimalar Engineering College</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='panimalarLogo.jpg') }}">
     <style>
-        .container{
-            max-width: 90%;
+        .container {
+            max-width: 95%;
+            margin: 0 auto;
+            padding: 15px;
         }
+
         .dashboard-container {
             padding: 20px;
+            overflow-x: auto;
         }
         
         .registrations-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
+            min-width: 800px;
         }
         
         .registrations-table th,
@@ -30,6 +36,7 @@
             background-color: #8b008b;
             color: white;
             font-weight: 600;
+            white-space: nowrap;
         }
         
         .registrations-table tr:nth-child(even) {
@@ -45,6 +52,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
         
         .logout-btn {
@@ -56,15 +65,18 @@
             cursor: pointer;
             text-decoration: none;
             font-weight: 600;
+            transition: all 0.3s ease;
         }
         
         .logout-btn:hover {
             background-color: #c82333;
+            transform: translateY(-2px);
         }
         
         .dashboard-buttons {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
         }
         
         .export-btn {
@@ -76,10 +88,12 @@
             cursor: pointer;
             text-decoration: none;
             font-weight: 600;
+            transition: all 0.3s ease;
         }
         
         .export-btn:hover {
             background-color: #218838;
+            transform: translateY(-2px);
         }
         
         .registrations-table td {
@@ -90,6 +104,72 @@
         .registrations-table td:nth-child(6) {
             white-space: nowrap;
             font-family: monospace;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 0 -20px;
+            padding: 0 20px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                max-width: 100%;
+                padding: 10px;
+            }
+
+            .dashboard-container {
+                padding: 15px;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+
+            .dashboard-buttons {
+                justify-content: center;
+            }
+
+            .registrations-table th,
+            .registrations-table td {
+                padding: 8px;
+                font-size: 13px;
+            }
+
+            .export-btn,
+            .logout-btn {
+                width: 70%;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 5px;
+            }
+
+            .dashboard-container {
+                padding: 10px;
+            }
+
+            .registrations-table th,
+            .registrations-table td {
+                padding: 6px;
+                font-size: 12px;
+            }
+
+            .dashboard-header h1 {
+                font-size: 20px;
+            }
+
+            .export-btn,
+            .logout-btn {
+                padding: 6px 12px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -112,30 +192,34 @@
                         <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
                     </div>
                 </div>
-                <table class="registrations-table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Roll Number</th>
-                            <th>Register Number</th>
-                            <th>Department</th>
-                            <th>Registration Date</th>
-                            <th>Last Updated</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for student in registrations %}
-                        <tr>
-                            <td>{{ student.name }}</td>
-                            <td>{{ student.rollNumber }}</td>
-                            <td>{{ student.registerNumber }}</td>
-                            <td>{{ student.department }}</td>
-                            <td>{{ student.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
-                            <td>{{ student.updated_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="registrations-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Roll Number</th>
+                                <th>Register Number</th>
+                                <th>Email</th>
+                                <th>Department</th>
+                                <th>Registration Date</th>
+                                <th>Last Updated</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in registrations %}
+                            <tr>
+                                <td>{{ student.name }}</td>
+                                <td>{{ student.rollNumber }}</td>
+                                <td>{{ student.registerNumber }}</td>
+                                <td>{{ student.email }}</td>
+                                <td>{{ student.department }}</td>
+                                <td>{{ student.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                                <td>{{ student.updated_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

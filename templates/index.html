@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Software Contest Registration - Panimalar Engineering College</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='panimalarLogo.jpg') }}">
 </head>
 <body>
     <div class="container">
@@ -54,6 +55,12 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required placeholder="Enter your email address">
+                    <span id="emailError" class="error-message"></span>
+                </div>
+
+                <div class="form-group">
                     <label for="department">Department</label>
                     <select id="department" name="department" required>
                         <option value="">Select Department</option>
@@ -64,16 +71,19 @@
                 </div>
 
                 <button type="submit" class="submit-btn">Register</button>
+                <a href="{{ url_for('index') }}" class="back-btn">Back to Rules</a>
             </form>
         </div>
     </div>
 
     <script>
         document.getElementById('registrationForm').addEventListener('submit', function(event) {
-            const rollNumber = document.getElementById('rollNumber').value;
+            const rollNumber = document.getElementById('rollNumber').value.toUpperCase();
             const registerNumber = document.getElementById('registerNumber').value;
+            const email = document.getElementById('email').value;
             const rollNumberError = document.getElementById('rollNumberError');
             const registerNumberError = document.getElementById('registerNumberError');
+            const emailError = document.getElementById('emailError');
             let isValid = true;
 
             // Roll number validation
@@ -94,6 +104,16 @@
                 isValid = false;
             } else {
                 registerNumberError.style.display = 'none';
+            }
+
+            // Email validation
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                emailError.textContent = 'Please enter a valid email address';
+                emailError.style.display = 'block';
+                isValid = false;
+            } else {
+                emailError.style.display = 'none';
             }
 
             if (!isValid) {

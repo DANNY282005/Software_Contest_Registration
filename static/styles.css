@@ -18,12 +18,12 @@ body {
 .container {
     width: 100%;
     max-width: 800px;
-    padding: 20px;
+    padding: 15px;
 }
 
 .registration-form {
     background: white;
-    padding: 40px;
+    padding: 30px;
     border-radius: 10px;
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
     position: relative;
@@ -152,25 +152,45 @@ select {
 }
 
 /* Buttons */
-.submit-btn {
+.submit-btn, .back-btn {
     width: 100%;
     padding: 15px;
-    background: #8b008b;
-    color: white;
-    border: none;
     border-radius: 6px;
     font-size: 18px;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 1px;
+    text-align: center;
+    display: block;
+    text-decoration: none;
+}
+
+.submit-btn {
+    background: #8b008b;
+    color: white;
+    border: none;
+    margin-bottom: 15px;
 }
 
 .submit-btn:hover {
     background: #4b0082;
     transform: translateY(-1px);
     box-shadow: 0 5px 15px rgba(75, 0, 130, 0.3);
+}
+
+.back-btn {
+    background-color: transparent;
+    border: 2px solid #8b008b;
+    color: #8b008b;
+}
+
+.back-btn:hover {
+    background-color: #8b008b;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(139, 0, 139, 0.2);
 }
 
 .error-message {
@@ -209,32 +229,82 @@ select {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
     .container {
         padding: 10px;
     }
-
+    
     .registration-form {
         padding: 20px;
     }
-
+    
     .college-name h2 {
         font-size: 28px;
     }
-
+    
     .college-name h3 {
         font-size: 20px;
     }
-
+    
     .college-name h4 {
         font-size: 16px;
     }
-
+    
     h1 {
         font-size: 24px;
+        margin-bottom: 20px;
     }
-
-    input, select, .submit-btn {
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    label {
+        font-size: 14px;
+    }
+    
+    input, select, .submit-btn, .back-btn {
         padding: 12px;
         font-size: 16px;
+    }
+    
+    .admin-section {
+        position: static;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    .admin-login-btn {
+        display: inline-flex;
+    }
+}
+
+@media (max-width: 480px) {
+    .college-name h2 {
+        font-size: 24px;
+    }
+    
+    .college-name h3 {
+        font-size: 18px;
+    }
+    
+    .college-name h4 {
+        font-size: 14px;
+    }
+    
+    h1 {
+        font-size: 20px;
+    }
+    
+    .college-logo {
+        width: 80px;
+    }
+    
+    .alert {
+        padding: 12px;
+        font-size: 14px;
     }
 }

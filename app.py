@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, send_file
 from flask_mysqldb import MySQL
+from flask_mail import Mail, Message
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 import MySQLdb
@@ -16,14 +17,27 @@ app.config['MYSQL_PASSWORD'] = 'Daniel@MYSQL'
 app.config['MYSQL_DB'] = 'Software_Contest'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'  # This will return results as dictionaries
 
+# Email Configuration
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'danielsolomon28032005@gmail.com'  # Replace with your email
+app.config['MAIL_PASSWORD'] = 'oiez yory arkr bwdr'     # Replace with your app password
+app.config['MAIL_DEFAULT_SENDER'] = 'danielsolomon28032005@gmail.com'  # Replace with your email
+
 # Secret key for session and flash messages
 app.secret_key = 'your_secret_key_here'  # Replace with a secure secret key
 
-# Initialize MySQL
+# Initialize MySQL and Flask extensions
 mysql = MySQL(app)
+mail = Mail(app)
 
 @app.route('/')
 def index():
+    return render_template('rules.html')
+
+@app.route('/registration')
+def registration():
     return render_template('index.html')
 
 @app.route('/register', methods=['POST'])
@@ -33,9 +47,10 @@ def register():
         name = request.form['name']
         roll_number = request.form['rollNumber']
         register_number = request.form['registerNumber']
+        email = request.form['email']
         department = request.form['department']
 
-        print(f"Attempting to register: {name}, {roll_number}, {register_number}, {department}")  # Debug print
+        # print(f"Attempting to register: {name}, {roll_number}, {register_number}, {email}, {department}")  # Debug print
 
         try:
             # Create cursor
@@ -43,34 +58,62 @@ def register():
 
             # Test database connection
             cur.execute("SELECT 1")
-            print("Database connection successful")  # Debug print
+            # print("Database connection successful")  # Debug print
 
             # Execute query with explicit column names
             insert_query = """
-                INSERT INTO Students (name, rollNumber, registerNumber, department)
-                VALUES (%s, %s, %s, %s)
+                INSERT INTO Students (name, rollNumber, registerNumber, email, department)
+                VALUES (%s, %s, %s, %s, %s)
             """
-            cur.execute(insert_query, (name, roll_number, register_number, department))
-            print("Query executed successfully")  # Debug print
+            cur.execute(insert_query, (name, roll_number, register_number, email, department))
+            # print("Query executed successfully")  # Debug print
 
             # Commit to DB
             mysql.connection.commit()
-            print("Changes committed to database")  # Debug print
+            # print("Changes committed to database")  # Debug print
+
+            # Send confirmation email
+            try:
+                msg = Message(
+                    'Registration Successful - Panimalar Engineering College',
+                    recipients=[email]
+                )
+                msg.body = f"""
+Dear {name},
+
+Thank you for registering for the Software Contest at Panimalar Engineering College.
+
+Your registration details:
+- Name: {name}
+- Roll Number: {roll_number}
+- Register Number: {register_number}
+- Department: {department}
+
+We look forward to seeing you at the contest!
+
+Best regards,
+Panimalar Engineering College
+                """
+                mail.send(msg)
+                # print(f"Confirmation email sent to {email}")
+            except Exception as e:
+                print(f"Failed to send email: {str(e)}")
+                # Continue with registration even if email fails
 
             # Verify the insertion
             cur.execute("SELECT * FROM Students WHERE rollNumber = %s", [roll_number])
             result = cur.fetchone()
-            print(f"Verification query result: {result}")  # Debug print
+            # print(f"Verification query result: {result}")  # Debug print
 
             # Close connection
             cur.close()
             
             if result:
-                flash('Registration successful!', 'success')
+                flash('Registration successful! A confirmation email has been sent to your registered email address.', 'success')
             else:
                 flash('Registration might have failed. Please check with admin.', 'warning')
             
-            return redirect(url_for('index'))
+            return redirect(url_for('registration'))
 
         except MySQLdb.Error as e:
             print(f"MySQL Error: {e}")  # Debug print
@@ -79,16 +122,18 @@ def register():
                     flash('Roll number already registered. Please use a different roll number.', 'error')
                 elif 'registerNumber' in str(e):
                     flash('Register number already registered. Please use a different register number.', 'error')
+                elif 'email' in str(e):
+                    flash('Email address already registered. Please use a different email address.', 'error')
                 else:
                     flash('This entry already exists in the database.', 'error')
             else:
                 flash(f'Database error: {str(e)}', 'error')
-            return redirect(url_for('index'))
+            return redirect(url_for('registration'))
 
         except Exception as e:
             print(f"General Error: {e}")  # Debug print
             flash(f'An error occurred: {str(e)}', 'error')
-            return redirect(url_for('index'))
+            return redirect(url_for('registration'))
 
 @app.route('/admin-login')
 def admin_login():
@@ -141,7 +186,7 @@ def admin_dashboard():
 def logout():
     session.clear()
     flash('Logged out successfully!', 'success')
-    return redirect(url_for('index'))
+    return redirect(url_for('registration'))
 
 @app.route('/export-excel')
 def export_excel():
@@ -156,13 +201,13 @@ def export_excel():
         ws.title = "Registered Students"
 
         # Add headers
-        headers = ['Name', 'Roll Number', 'Register Number', 'Department', 'Registration Date', 'Last Updated']
+        headers = ['Name', 'Roll Number', 'Register Number', 'Email', 'Department', 'Registration Date', 'Last Updated']
         for col, header in enumerate(headers, 1):
             ws.cell(row=1, column=col, value=header)
 
         # Get data from database
         cur = mysql.connection.cursor()
-        cur.execute("SELECT name, rollNumber, registerNumber, department, created_at, updated_at FROM Students ORDER BY name")
+        cur.execute("SELECT name, rollNumber, registerNumber, email, department, created_at, updated_at FROM Students ORDER BY name")
         students = cur.fetchall()
         cur.close()
 
@@ -171,9 +216,10 @@ def export_excel():
             ws.cell(row=row, column=1, value=student['name'])
             ws.cell(row=row, column=2, value=student['rollNumber'])
             ws.cell(row=row, column=3, value=student['registerNumber'])
-            ws.cell(row=row, column=4, value=student['department'])
-            ws.cell(row=row, column=5, value=student['created_at'].strftime('%Y-%m-%d %H:%M:%S'))
-            ws.cell(row=row, column=6, value=student['updated_at'].strftime('%Y-%m-%d %H:%M:%S'))
+            ws.cell(row=row, column=4, value=student['email'])
+            ws.cell(row=row, column=5, value=student['department'])
+            ws.cell(row=row, column=6, value=student['created_at'].strftime('%Y-%m-%d %H:%M:%S'))
+            ws.cell(row=row, column=7, value=student['updated_at'].strftime('%Y-%m-%d %H:%M:%S'))
 
         # Create a BytesIO object to store the Excel file
         excel_file = io.BytesIO()
