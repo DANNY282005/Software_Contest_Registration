@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Successful - Panimalar Engineering College</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='panimalarLogo.jpg') }}">
+    <style>
+        .success-container {
+            text-align: center;
+            padding: 40px 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .success-icon {
+            color: #28a745;
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        .success-message {
+            color: #28a745;
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+        .back-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #8b008b;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .back-btn:hover {
+            background-color: #4b0082;
+        }
+        .college-name h2 {
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+        .college-name h4 {
+            font-size: 18px;
+            color: #ff0000;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="registration-form">
+            <div class="college-header">
+                <img src="{{ url_for('static', filename='panimalarLogo.png') }}" alt="Panimalar Engineering College Logo" class="college-logo">
+                <div class="college-name">
+                    <h2>PANIMALAR ENGINEERING COLLEGE</h2>
+                    <h4>CHENNAI CITY CAMPUS</h4>
+                </div>
+            </div>
+            <div class="success-container">
+                <!-- <div class="success-icon">✓</div> -->
+                <div class="success-message">{{ message }}</div>
+                <a href="{{ url_for('registration') }}" class="back-btn">Back to Registration</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

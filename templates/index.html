@@ -5,7 +5,246 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Software Contest Registration - Panimalar Engineering College</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <link rel="icon" type="image/jpg" href="{{ url_for('static', filename='panimalarLogo.jpg') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='panimalarLogo.png') }}">
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename='bg1.jpg')}}");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        .registration-form {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 10px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .college-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-direction: column;
+        }
+        
+        .college-logo {
+            width: 100px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        
+        .college-name {
+            text-align: center;
+        }
+        
+        .college-name h2 {
+            font-size: 28px;
+            margin-bottom: 5px;
+            color: #FFD700;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+        
+        .college-name h4 {
+            font-size: 18px;
+            color: #FFA500;
+            margin-top: 5px;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                background-size: cover;
+                background-position: center;
+                background-attachment: fixed;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .registration-form {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            .college-logo {
+                width: 80px;
+            }
+
+            .college-name h2 {
+                font-size: 24px;
+            }
+
+            .college-name h4 {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                background-size: cover;
+                background-position: center;
+                background-attachment: fixed;
+            }
+            
+            .container {
+                padding: 5px;
+            }
+            
+            .registration-form {
+                margin: 5px;
+                padding: 10px;
+            }
+
+            .college-logo {
+                width: 60px;
+            }
+
+            .college-name h2 {
+                font-size: 20px;
+            }
+
+            .college-name h4 {
+                font-size: 14px;
+            }
+
+            .form-group label {
+                font-size: 14px;
+            }
+
+            .form-group input,
+            .form-group select {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .submit-btn,
+            .back-btn {
+                font-size: 14px;
+                padding: 10px 20px;
+            }
+        }
+
+        .form-group label {
+            color: #00BFFF;
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: block;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .form-group input,
+        .form-group select {
+            color: #000000;
+            font-size: 15px;
+            padding: 12px;
+            border: 2px solid #00BFFF;
+            border-radius: 6px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #00FFFF;
+            box-shadow: 0 0 0 3px rgba(0, 191, 255, 0.3);
+            outline: none;
+        }
+
+        .form-group input::placeholder {
+            color: #333;
+            opacity: 0.8;
+        }
+
+        .error-message {
+            color: #d32f2f;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+            font-weight: 600;
+        }
+
+        .submit-btn {
+            background: #00BFFF;
+            color: white;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+        }
+
+        .submit-btn:hover {
+            background: #00FFFF;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 191, 255, 0.5);
+        }
+
+        .back-btn {
+            color: #FFFFFF;
+            font-weight: 700;
+            text-decoration: none;
+            padding: 12px 24px;
+            font-size: 16px;
+        }
+
+        .back-btn:hover {
+            color: #B0E0E6;
+        }
+
+        h1 {
+            color: #FFFFFF;
+            font-weight: 700;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+        }
+
+        .admin-login-btn {
+            background: #1a237e;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .admin-login-btn:hover {
+            background: #3949ab;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(57, 73, 171, 0.3);
+        }
+
+        .alert {
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .alert-success {
+            background-color: rgba(40, 167, 69, 0.2);
+            color: #d4edda;
+            border: 1px solid rgba(40, 167, 69, 0.3);
+        }
+
+        .alert-danger {
+            background-color: rgba(220, 53, 69, 0.2);
+            color: #f8d7da;
+            border: 1px solid rgba(220, 53, 69, 0.3);
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -19,10 +258,9 @@
                 </a>
             </div>
             <div class="college-header">
-                <img src="{{ url_for('static', filename='panimalarLogo.jpg') }}" alt="Panimalar Engineering College Logo" class="college-logo">
+                <img src="{{ url_for('static', filename='panimalarLogo.png') }}" alt="Panimalar Engineering College Logo" class="college-logo">
                 <div class="college-name">
-                    <h2>PANIMALAR</h2>
-                    <h3>ENGINEERING COLLEGE</h3>
+                    <h2>PANIMALAR ENGINEERING COLLEGE</h2>
                     <h4>CHENNAI CITY CAMPUS</h4>
                 </div>
             </div>

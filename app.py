@@ -20,9 +20,9 @@ app.config['MYSQL_DB'] = 'software_contest'
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'danielsolomon28032005@gmail.com'  # Replace with your email
-app.config['MAIL_PASSWORD'] = 'oiez yory arkr bwdr'     # Replace with your app password
-app.config['MAIL_DEFAULT_SENDER'] = 'danielsolomon28032005@gmail.com'  # Replace with your email
+app.config['MAIL_USERNAME'] = 'peccccsoftwarecontest@gmail.com'  # Replace with your email
+app.config['MAIL_PASSWORD'] = 'idrx oanp rccl sbyh'     # Replace with your app password
+app.config['MAIL_DEFAULT_SENDER'] = 'peccccsoftwarecontest@gmail.com'  # Replace with your email
 
 # Secret key for session and flash messages
 app.secret_key = 'your_secret_key_here'  # Replace with a secure secret key
@@ -47,6 +47,14 @@ def index():
 @app.route('/registration')
 def registration():
     return render_template('index.html')
+
+@app.route('/success')
+def success():
+    # Get the success message from session
+    success_message = session.pop('success_message', None)
+    if not success_message:
+        return redirect(url_for('registration'))
+    return render_template('success.html', message=success_message)
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -115,15 +123,18 @@ Best regards,
 Panimalar Engineering College
                 """
                 mail.send(msg)
-                flash('Registration successful! A confirmation email has been sent to your registered email address.', 'success')
+                success_message = 'Registration successful! A confirmation email has been sent to your registered email address.'
             except Exception as e:
                 print(f"Failed to send email: {str(e)}")
-                flash('Registration successful! However, we could not send the confirmation email. Please save your registration details.', 'warning')
+                success_message = 'Registration successful! However, we could not send the confirmation email. Please save your registration details.'
 
             # Close connection
             cur.close()
             conn.close()
-            return redirect(url_for('registration'))
+            
+            # Store success message in session and redirect to success page
+            session['success_message'] = success_message
+            return redirect(url_for('success'))
 
         except MySQLError as e:
             print(f"MySQL Error: {e}")
