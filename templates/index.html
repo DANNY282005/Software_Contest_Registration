@@ -120,6 +120,11 @@
                 event.preventDefault();
             }
         });
+
+        // Convert roll number to uppercase while typing
+        document.getElementById('rollNumber').addEventListener('input', function(e) {
+            this.value = this.value.toUpperCase();
+        });
     </script>
 </body>
 </html> 
