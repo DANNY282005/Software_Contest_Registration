@@ -10,9 +10,9 @@ import io
 app = Flask(__name__)
 
 # Configure MySQL
-app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_HOST'] = 'database-1.cxuy6moa43xw.us-east-1.rds.amazonaws.com'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Daniel@MYSQL'
+app.config['MYSQL_PASSWORD'] = 'Daniel#MYSQL'
 app.config['MYSQL_DB'] = 'Software_Contest'
 
 # Email Configuration
