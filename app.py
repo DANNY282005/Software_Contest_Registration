@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, send_file
-from flask_mysqldb import MySQL
 from flask_mail import Mail, Message
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
@@ -15,7 +14,6 @@ app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'Daniel@MYSQL'
 app.config['MYSQL_DB'] = 'Software_Contest'
-app.config['MYSQL_CURSORCLASS'] = 'DictCursor'  # This will return results as dictionaries
 
 # Email Configuration
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
@@ -28,9 +26,17 @@ app.config['MAIL_DEFAULT_SENDER'] = 'danielsolomon28032005@gmail.com'  # Replace
 # Secret key for session and flash messages
 app.secret_key = 'your_secret_key_here'  # Replace with a secure secret key
 
-# Initialize MySQL and Flask extensions
-mysql = MySQL(app)
+# Initialize Flask-Mail extension
 mail = Mail(app)
+
+# Function to get MySQL connection
+def get_db_connection():
+    return MySQLdb.connect(
+        host=app.config['MYSQL_HOST'],
+        user=app.config['MYSQL_USER'],
+        password=app.config['MYSQL_PASSWORD'],
+        db=app.config['MYSQL_DB']
+    )
 
 @app.route('/')
 def index():
@@ -50,27 +56,23 @@ def register():
         email = request.form['email']
         department = request.form['department']
 
-        # print(f"Attempting to register: {name}, {roll_number}, {register_number}, {email}, {department}")  # Debug print
-
         try:
-            # Create cursor
-            cur = mysql.connection.cursor()
+            # Get database connection
+            conn = get_db_connection()
+            cur = conn.cursor(MySQLdb.cursors.DictCursor)  # Use DictCursor to return rows as dictionaries
 
             # Test database connection
             cur.execute("SELECT 1")
-            # print("Database connection successful")  # Debug print
-
+            
             # Execute query with explicit column names
             insert_query = """
                 INSERT INTO Students (name, rollNumber, registerNumber, email, department)
                 VALUES (%s, %s, %s, %s, %s)
             """
             cur.execute(insert_query, (name, roll_number, register_number, email, department))
-            # print("Query executed successfully")  # Debug print
 
             # Commit to DB
-            mysql.connection.commit()
-            # print("Changes committed to database")  # Debug print
+            conn.commit()
 
             # Send confirmation email
             try:
@@ -95,7 +97,6 @@ Best regards,
 Panimalar Engineering College
                 """
                 mail.send(msg)
-                # print(f"Confirmation email sent to {email}")
             except Exception as e:
                 print(f"Failed to send email: {str(e)}")
                 # Continue with registration even if email fails
@@ -103,10 +104,10 @@ Panimalar Engineering College
             # Verify the insertion
             cur.execute("SELECT * FROM Students WHERE rollNumber = %s", [roll_number])
             result = cur.fetchone()
-            # print(f"Verification query result: {result}")  # Debug print
 
             # Close connection
             cur.close()
+            conn.close()
             
             if result:
                 flash('Registration successful! A confirmation email has been sent to your registered email address.', 'success')
@@ -116,7 +117,7 @@ Panimalar Engineering College
             return redirect(url_for('registration'))
 
         except MySQLdb.Error as e:
-            print(f"MySQL Error: {e}")  # Debug print
+            print(f"MySQL Error: {e}")
             if e.args[0] == 1062:  # Duplicate entry error
                 if 'rollNumber' in str(e):
                     flash('Roll number already registered. Please use a different roll number.', 'error')
@@ -131,7 +132,7 @@ Panimalar Engineering College
             return redirect(url_for('registration'))
 
         except Exception as e:
-            print(f"General Error: {e}")  # Debug print
+            print(f"General Error: {e}")
             flash(f'An error occurred: {str(e)}', 'error')
             return redirect(url_for('registration'))
 
@@ -146,12 +147,14 @@ def admin_auth():
             username = request.form['username']
             password = request.form['password']
 
-            cur = mysql.connection.cursor()
-            
+            conn = get_db_connection()
+            cur = conn.cursor(MySQLdb.cursors.DictCursor)
+
             # Check if admin exists
             cur.execute("SELECT * FROM Admin WHERE name = %s", [username])
             admin = cur.fetchone()
             cur.close()
+            conn.close()
 
             if admin and admin['password'] == password:  # For now, using plain password comparison
                 session['admin_logged_in'] = True
@@ -172,10 +175,12 @@ def admin_dashboard():
         return redirect(url_for('admin_login'))
 
     try:
-        cur = mysql.connection.cursor()
+        conn = get_db_connection()
+        cur = conn.cursor(MySQLdb.cursors.DictCursor)
         cur.execute("SELECT * FROM Students ORDER BY rollNumber")
         registrations = cur.fetchall()
         cur.close()
+        conn.close()
         return render_template('admin-dashboard.html', registrations=registrations)
 
     except Exception as e:
@@ -206,10 +211,12 @@ def export_excel():
             ws.cell(row=1, column=col, value=header)
 
         # Get data from database
-        cur = mysql.connection.cursor()
+        conn = get_db_connection()
+        cur = conn.cursor(MySQLdb.cursors.DictCursor)
         cur.execute("SELECT name, rollNumber, registerNumber, email, department, created_at, updated_at FROM Students ORDER BY name")
         students = cur.fetchall()
         cur.close()
+        conn.close()
 
         # Add data to worksheet
         for row, student in enumerate(students, 2):
@@ -244,12 +251,13 @@ def export_excel():
 if __name__ == '__main__':
     # Test database connection on startup
     try:
-        with app.app_context():
-            cur = mysql.connection.cursor()
-            cur.execute("SELECT 1")
-            print("Database connection test successful on startup")
-            cur.close()
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute("SELECT 1")
+        print("Database connection test successful on startup")
+        cur.close()
+        conn.close()
     except Exception as e:
         print(f"Database connection test failed on startup: {e}")
 
-    app.run(host='0.0.0.0',debug=True, port=5000) 
+    app.run(host='0.0.0.0', debug=True, port=5000)
