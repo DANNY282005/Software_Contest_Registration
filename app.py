@@ -123,7 +123,7 @@ Best regards,
 Panimalar Engineering College
                 """
                 mail.send(msg)
-                success_message = 'Registration successful! A confirmation email has been sent to your registered email address.'
+                success_message = f"Registration successful! A confirmation email has been sent to {email}. If you don't see the message in your inbox, please check your spam folder."
             except Exception as e:
                 print(f"Failed to send email: {str(e)}")
                 success_message = 'Registration successful! However, we could not send the confirmation email. Please save your registration details.'
